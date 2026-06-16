@@ -1,7 +1,7 @@
 # ZJ-f312. 1.人力分配
 正式準備APCS後第一次寫ZJ考古題 初學很菜輕噴🥹\
-[Zero Judge-f312. 1.人力分配](https://zerojudge.tw/ShowProblem?problemid=f312)\
-\
+[Zero Judge-f312. 1.人力分配](https://zerojudge.tw/ShowProblem?problemid=f312)
+
 - 嘗試只用 if/else (debug: 5)
 ```
 #include<bits/stdc++.h>
