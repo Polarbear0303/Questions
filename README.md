@@ -1,7 +1,6 @@
-# ZJ-f312. 1.人力分配
-正式準備APCS後第一次寫ZJ考古題。
-## 聲明
-由於實際寫過發現自己第一版 bug 太多，因此目前會把寫過的題目設成公開並放上 debug 次數（之後有機會隱藏？）請大家督促我練習並強烈譴責我的 debug 次數。\
+### 目的
+哈囉，我現在要開始學C++和準備APCS。由於實際寫過發現自己 bug 太多，因此決定在這裡放我做過的一些題和 debug 次數（之後有機會隱藏？）請大家強烈公審我的 debug 次數以督促我好好寫並練習。
+### 題
 [Zero Judge-f312. 1.人力分配](https://zerojudge.tw/ShowProblem?problemid=f312)
 
 - 嘗試只用 if/else (debug: 5)
@@ -72,5 +71,25 @@ int main(){
             cout<<a*int(d+1)*int(d+1)+b*int(d+1)+c<<'\n';
         }
     }
+}
+```
+[TOJ 305](https://toj.tfcis.org/oj/pro/355/)（debug: 1）
+```
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int n,k,v,f=1,s=1;
+    cin>>n>>k;
+    for(int i=0;i<n;i++){
+        cin>>v;
+        if(v>f){
+            s=f;
+            f=v;
+        }
+        if(v<f && v>s){
+            s=v;
+        }
+    }
+    cout<<s<<'\n';
 }
 ```
