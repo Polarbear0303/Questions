@@ -1,5 +1,7 @@
 ### 目的
-哈囉，我現在要開始學C++和準備APCS。由於實際寫過發現自己 bug 太多，因此決定在這裡放對我來說有代表性的題（例如用新東西）和 debug 次數（之後有機會隱藏？）請大家強烈公審我的 debug 次數以督促我好好寫並練習。
+哈囉，我現在要開始學C++和準備APCS。由於實際寫過發現自己 bug 太多，因此決定在這裡放對我來說有代表性的題（例如用新東西）和主要 debug 次數（之後有機會隱藏？）請大家強烈公審我的 debug 次數以督促我好好寫並練習。
+- 我後來 debug 都只放主要的，像加;那種就沒算，所以第一題次數應該比較不準（？
+- 後面有在程式內加 // 寫 debug 原因提醒我注意。
 ### 題
 [Zero Judge-f312.](https://zerojudge.tw/ShowProblem?problemid=f312)
 
@@ -71,26 +73,6 @@ int main(){
             cout<<a*int(d+1)*int(d+1)+b*int(d+1)+c<<'\n';
         }
     }
-}
-```
-[TOJ 355](https://toj.tfcis.org/oj/pro/355/)（debug: 1）
-```
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-    int n,k,v,f=1,s=1;
-    cin>>n>>k;
-    for(int i=0;i<n;i++){
-        cin>>v;
-        if(v>f){
-            s=f;
-            f=v;
-        }
-        if(v<f && v>s){
-            s=v;
-        }
-    }
-    cout<<s<<'\n';
 }
 ```
 [TOJ 110](https://toj.tfcis.org/oj/pro/110/)（debug: 3）
@@ -181,7 +163,7 @@ int main(){
     cin>>t;
     while(t--){
         cin>>a>>b;
-        r=1;
+        r=1; //做完一組後記得 r 變為非 0，避免第一組做完後 r=0 影響下一組小 while 判斷。 
         while(r){
             r=a%b;
             a=b;
@@ -189,5 +171,76 @@ int main(){
         }
         cout<<a<<'\n';
     }
+}
+```
+[TOJ 8](https://toj.tfcis.org/oj/pro/8/)（debug: 2）
+
+- getline &`while(cin>>n)`
+```
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    ios::sync_with_stdio(false), cin.tie(nullptr);
+    int n;
+    while(cin>>n){
+        string s;
+        cin.ignore();
+        getline(cin,s);
+        for(int i=0;i<n;i++) for(int j=0;j<s.length()/n;j++) cout<<s[j*n+i];
+        cout<<'\n';
+    }
+}
+```
+[TOJ 485](https://toj.tfcis.org/oj/pro/485/)（debug: 2）
+
+- 就是覺得比較難 然後`while j!=e`的想法我覺得還不錯（？
+```
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    ios::sync_with_stdio(false), cin.tie(nullptr);
+    int n,e=0,j=1;
+    string a,s;
+    cin>>n>>s;
+    while(j!=e){
+        j=e;
+        for(int i=0;i<s.length()/2;i++){ //記得 s 長度會變，不能用 n
+            if(s[i]!=s[s.length()-1-i]){
+                e+=1;
+                a=s[e-1];
+                s.insert(n,a); //不能 (n,s[e-1])（idk why）or (n,"s[e-1]")（直接插入字）
+                break;
+            }
+        }
+    }
+    cout<<e<<'\n';
+}
+```
+[TOJ 501](https://toj.tfcis.org/oj/pro/501/)（debug: 2）
+
+- 比較難
+```
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    ios::sync_with_stdio(false), cin.tie(nullptr);
+    int n,s,l=0,j=0;
+    cin>>n;
+    int m[2*n+1];
+    for(int i=0;i<n;i++){
+        cin>>m[i];
+        m[i+n]=m[i];
+    }
+    m[2*n]=0;
+    while(l<n && j<n){
+        s=0;
+        for(int i=j;i<2*n;i++){
+            if(m[i]>=i-j+1) s++;
+            else break;
+        }
+        l=max(s,l);
+        j+=s-m[j+s]+1;
+    }
+    cout<<min(n,l)<<'\n';
 }
 ```
