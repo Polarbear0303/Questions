@@ -355,3 +355,108 @@ int main(){
     }
 }
 ```
+[Zero Judge-o713.](https://zerojudge.tw/ShowProblem?problemid=o713)（debug + 搓 -> \infinity）
+
+- BFS  搓了好久🥹
+```
+#include<bits/stdc++.h>
+using namespace std;
+int m,n,q,tr,sz,p1,p2,dis=0;
+vector<pair<int,int> > pt(250000);
+bool cmp(pair<int,int> a,pair<int,int> b){
+    return pt[a.first*n+a.second].first<pt[b.first*n+b.second].first;
+}
+int main(){
+    ios::sync_with_stdio(0),cin.tie(0);
+    cin>>m>>n>>q;
+    pt.resize(m*n);
+    queue<pair<int,int> > qu;
+    vector<pair<int,int> > bb;
+    vector<bool> val(m*n);       //雖然這題map()時空不會炸，但會耗很多
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            cin>>tr;
+            if(tr==-2){
+                qu.push({i,j});
+                pt[i*n+j]={0,tr};
+                val[i*n+j]=1;
+                
+            }
+            else pt[i*n+j]={249999,tr};    //998不一定夠
+        }
+    }
+    while(!qu.empty()){
+        dis++;
+        sz=qu.size();
+        while(sz--){
+            p1=qu.front().first;
+            p2=qu.front().second;
+            if(p1>0 && pt[(p1-1)*n+p2].second!=-1 && !val[(p1-1)*n+p2]){
+                val[(p1-1)*n+p2]=1;
+                pt[(p1-1)*n+p2].first=dis;
+                qu.push({p1-1,p2});
+                if(pt[(p1-1)*n+p2].second>0) bb.push_back({p1-1,p2});
+            }
+            if(p2>0 && pt[p1*n+p2-1].second!=-1 && !val[p1*n+p2-1]){
+                val[p1*n+p2-1]=1;
+                pt[p1*n+p2-1].first=dis;
+                qu.push({p1,p2-1});
+                if(pt[p1*n+p2-1].second>0) bb.push_back({p1,p2-1});
+            }
+            if(p1<m-1 && pt[(p1+1)*n+p2].second!=-1 && !val[(p1+1)*n+p2]){
+                val[(p1+1)*n+p2]=1;
+                pt[(p1+1)*n+p2].first=dis;
+                qu.push({p1+1,p2});
+                if(pt[(p1+1)*n+p2].second>0) bb.push_back({p1+1,p2});
+            }
+            if(p2<n-1 && pt[p1*n+p2+1].second!=-1 && !val[p1*n+p2+1]){
+                val[p1*n+p2+1]=1;
+                pt[p1*n+p2+1].first=dis;
+                qu.push({p1,p2+1});
+                if(pt[p1*n+p2+1].second>0) bb.push_back({p1,p2+1});
+            }
+            qu.pop();
+        }
+    }
+    while(!bb.empty()){         //這裡用for跑bb.size()的話，後面sort後會變很奇怪
+        queue<pair<int,int> > qb;
+        int x=(*bb.begin()).first,y=(*bb.begin()).second;
+        qb.push({x,y});
+        dis=pt[x*n+y].first;
+        int b=pt[x*n+y].second;
+        for(int i=max(0,x-b);i<=min(m-1,x+b);i++) for(int j=max(0,x+y-b-i);j<=min(n-1,x+y+b-i);j++) val[i*n+j]=((i==x) & (j==y));
+        while(b-- && !qb.empty()){
+            sz=qb.size();
+            while(sz--){
+                p1=qb.front().first;
+                p2=qb.front().second;
+                if(p1>0 && pt[(p1-1)*n+p2].second!=-1 && !val[(p1-1)*n+p2]){
+                    val[(p1-1)*n+p2]=1;
+                    pt[(p1-1)*n+p2].first=min(pt[(p1-1)*n+p2].first,dis);
+                    qb.push({p1-1,p2});
+                }
+                if(p2>0 && pt[p1*n+p2-1].second!=-1 && !val[p1*n+p2-1]){
+                    val[p1*n+p2-1]=1;
+                    pt[p1*n+p2-1].first=min(pt[p1*n+p2-1].first,dis);
+                    qb.push({p1,p2-1});
+                }
+                if(p1<m-1 && pt[(p1+1)*n+p2].second!=-1 && !val[(p1+1)*n+p2]){
+                    val[(p1+1)*n+p2]=1;
+                    pt[(p1+1)*n+p2].first=min(pt[(p1+1)*n+p2].first,dis);
+                    qb.push({p1+1,p2});
+                }
+                if(p2<n-1 && pt[p1*n+p2+1].second!=-1 && !val[p1*n+p2+1]){
+                    val[p1*n+p2+1]=1;
+                    pt[p1*n+p2+1].first=min(pt[p1*n+p2+1].first,dis);
+                    qb.push({p1,p2+1});
+                }
+                qb.pop();
+            }
+        }
+        bb.erase(bb.begin());
+        sort(bb.begin(),bb.end(),cmp);
+    }
+    sort(pt.begin(),pt.end());
+    cout<<pt[q-1].first<<'\n';
+}
+```
