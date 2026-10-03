@@ -358,6 +358,7 @@ int main(){
 [Zero Judge-o713.](https://zerojudge.tw/ShowProblem?problemid=o713)（debug + 搓 -> \infinity）
 
 - BFS  搓了好久🥹
+- [別人的超好寫法](https://www.canva.com/design/DAGazyU5rg8/KKdF_KyZBAet2nUtb75yOg/edit)（二分搜 + BFS）
 ```
 #include<bits/stdc++.h>
 using namespace std;
@@ -458,5 +459,24 @@ int main(){
     }
     sort(pt.begin(),pt.end());
     cout<<pt[q-1].first<<'\n';
+}
+```
+[Zero Judge-i794.](https://zerojudge.tw/ShowProblem?problemid=i794)
+
+- DP 0/1 背包 神奇一維陣列逆向遞迴
+```
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    ios::sync_with_stdio(0),cin.tie(0);
+    int w,e,n,d,a;
+    cin>>w>>e>>n;
+    vector<int> v(w,0);     //v[i]為耗i生命值最大可多少傷害
+    for(int i=0;i<n;i++){
+        cin>>d>>a;
+        for(int i=w-1;i>=d;i--) v[i]=max(v[i],v[i-d]+a);      //每次多加一招式，從w-1遞回d確保v[i-d]不含這招
+    }
+    if(v[w-1]<e) cout<<"wryyyyyyyyyyyyy\n";
+    else cout<<w-(upper_bound(v.begin(),v.end(),e-1)-v.begin())<<'\n';
 }
 ```
